@@ -7,7 +7,7 @@ contract("Bank", async (accounts) => {
 
         const amount = web3.utils.toWei('10', 'ether')
 
-        await bank.deposit(amount, {
+        await bank.deposit({
             from: depositor,
             value: amount
         })
