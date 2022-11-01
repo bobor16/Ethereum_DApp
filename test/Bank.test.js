@@ -22,12 +22,20 @@ contract("Bank", async (accounts) => {
         const bank = await Bank.new()
         const depositor = accounts[2]
 
+        let bankTotalBalance = await web3.eth.getBalance(bank.address)
+        bankTotalBalance = web3.utils.fromWei(bankTotalBalance)
+        console.log("bank balance: ", bankTotalBalance)
+
         const amount = web3.utils.toWei('20', 'ether')
 
         await bank.deposit({
             from: depositor,
             value: amount
         })
+
+        bankTotalBalance = await web3.eth.getBalance(bank.address)
+        bankTotalBalance = web3.utils.fromWei(bankTotalBalance)
+        console.log("bank balance: ", bankTotalBalance)
 
         let balance = await bank.balanceOf(depositor)
         balance = parseInt(web3.utils.fromWei(balance, 'ether'))
@@ -38,8 +46,14 @@ contract("Bank", async (accounts) => {
             from: depositor
         })
 
+        bankTotalBalance = await web3.eth.getBalance(bank.address)
+        bankTotalBalance = web3.utils.fromWei(bankTotalBalance)
+        console.log("bank balance: ", bankTotalBalance)
+
         balance = await bank.balanceOf(depositor)
         balance = parseInt(web3.utils.fromWei(balance, 'ether'))
-        assert.equal(balancem, 10)
+        assert.equal(balance, 10)
+
+        assert.equal(parseInt(bankTotalBalance), 10)
     })
 })
