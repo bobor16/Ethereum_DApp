@@ -1,7 +1,14 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >0.8.0;
 
+/**
+* Smart contract with three different functions
+* deposit, balanceOf, and withdraw. a _balance of type
+* mapping to keep track of which account balance to use.
+*/
+
 contract Bank {
+
     mapping(address => uint256) private _balances;
 
     function deposit() public payable {
