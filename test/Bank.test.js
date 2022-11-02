@@ -1,21 +1,26 @@
 const Bank = artifacts.require('Bank.sol')
-
+ /**
+  * Only the first test case has documentation due to the rest being 
+  * so similar.
+  */
 contract("Bank", async (accounts) => {
+    // creates a testcase function
     it("allows a user to deposit funds", async () => {
-        const bank = await Bank.new()
-        const depositor = accounts[1]
+        const bank = await Bank.new() // create a new Bank contract
+        const depositor = accounts[1] // uses the account on index 1
 
+        // convert to wei due to the smallest ethere unit
         const amount = web3.utils.toWei('10', 'ether')
-
+        
+        // deposit into the current account using the contract (account 1)
         await bank.deposit({
             from: depositor,
             value: amount
         })
 
-        let balance = await bank.balanceOf(depositor)
-        balance = parseInt(web3.utils.fromWei(balance, 'ether'))
-
-        assert.equal(balance, 10)
+        let balance = await bank.balanceOf(depositor) // gets the balance of the current account
+        balance = parseInt(web3.utils.fromWei(balance, 'ether')) // convert back from wei
+        assert.equal(balance, 10) // assert balance is the same as 10
     })
 
     it("allows a user to withdraw funds", async () => {
@@ -24,7 +29,6 @@ contract("Bank", async (accounts) => {
 
         let bankTotalBalance = await web3.eth.getBalance(bank.address)
         bankTotalBalance = web3.utils.fromWei(bankTotalBalance)
-        // console.log("bank balance: ", bankTotalBalance)
 
         const amount = web3.utils.toWei('20', 'ether')
 
@@ -35,7 +39,6 @@ contract("Bank", async (accounts) => {
 
         bankTotalBalance = await web3.eth.getBalance(bank.address)
         bankTotalBalance = web3.utils.fromWei(bankTotalBalance)
-        // console.log("bank balance: ", bankTotalBalance)
 
         let balance = await bank.balanceOf(depositor)
         balance = parseInt(web3.utils.fromWei(balance, 'ether'))
@@ -48,7 +51,6 @@ contract("Bank", async (accounts) => {
 
         bankTotalBalance = await web3.eth.getBalance(bank.address)
         bankTotalBalance = web3.utils.fromWei(bankTotalBalance)
-        // console.log("bank balance: ", bankTotalBalance)
 
         balance = await bank.balanceOf(depositor)
         balance = parseInt(web3.utils.fromWei(balance, 'ether'))
@@ -64,6 +66,5 @@ contract("Bank", async (accounts) => {
         let balance = await bank.balanceOf(depositor)
         balance = parseInt(web3.utils.fromWei(balance, 'ether'))
         assert.equal(balance, 0)
-        // console.log("balance", balance)
     })
 })
